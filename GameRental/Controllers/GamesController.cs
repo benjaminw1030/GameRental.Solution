@@ -12,7 +12,7 @@ using System.Security.Claims;
 namespace GameRental.Controllers
 {
   [Authorize]
-  public class GamesController : Controllers
+  public class GamesController : Controller
   {
     private readonly GameRentalContext _db;
     private readonly UserManager<ApplicationUser> _userManager;

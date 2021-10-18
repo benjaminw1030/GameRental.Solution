@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace GameRental.Controllers
 {
-  public class DevelopersController : Controllers
+  public class DevelopersController : Controller
   {
     private readonly GameRentalContext _db;
 
