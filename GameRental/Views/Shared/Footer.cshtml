@@ -1,0 +1,19 @@
+<div id="footer">
+  <p>@Html.ActionLink("Home", "Index", "Home")</p>
+  <p>|</p>
+  <p>@Html.ActionLink("Game List", "Index", "Games")</p>
+  <p>|</p>
+  <p>@Html.ActionLink("Developer List", "Index", "Developers")</p>
+  <p>|</p>
+  @if (User.Identity.IsAuthenticated)
+  {
+    @using (Html.BeginForm("Logoff", "Account"))
+    {
+      <input type="submit" value="Log out" class="btn btn-dark"/>
+    }
+  }
+  else
+  {
+    <p>@Html.ActionLink("Login/Register", "Index", "Account")</p>
+  }
+</div>

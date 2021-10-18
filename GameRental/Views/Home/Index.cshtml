@@ -1,0 +1,14 @@
+@{
+  Layout = "_Layout";
+}
+
+<div class="jumbotron">
+<h2>Video Game Rentals</h2>
+</div>
+
+<p>@Html.ActionLink("Create an account", "Index", "Account")</p>
+
+@if (User.Identity.IsAuthenticated)
+{
+  <p>Authenticated</p>
+}

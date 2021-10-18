@@ -1,9 +1,15 @@
-div#footer {
-  position:fixed;
-  bottom:0px;
-  left:0px;
-  width:100%;
-  color:#CCC;
-  background:#333;
-  padding:8px;
+#footer {
+  display: flex;
+	position: fixed;
+	bottom: 0px;
+	left: 0px;
+	width: 100%;
+	color: rgb(0, 0, 0);
+	background: rgba(57, 234, 146, 0.9);
+	padding: 8px;
+  justify-content: center;
+}
+
+#footer p {
+  margin: 5px;
 }

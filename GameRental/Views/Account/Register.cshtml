@@ -1,0 +1,25 @@
+@{
+  Layout = "_Layout";
+}
+
+@using GameRental.ViewModels
+
+@model RegisterViewModel
+
+<div class="jumbotron">
+  Register a new user
+</div>
+
+@using (Html.BeginForm("Register", "Account", FormMethod.Post))
+{
+  @Html.LabelFor(user => user.Email)
+  @Html.TextBoxFor(user => user.Email)
+
+  @Html.LabelFor(user => user.Password)
+  @Html.TextBoxFor(user => user.Password)
+
+  @Html.LabelFor(user => user.ConfirmPassword)
+  @Html.TextBoxFor(user => user.ConfirmPassword)
+
+  <input type="submit" value="Register" class="btn btn-dark"/>
+}
