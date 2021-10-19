@@ -5,16 +5,36 @@
 @using GameRental.Models;
 @model List<GameRental.Models.Game>;
 
-<h1>Games in stock</h1>
+<div class="jumbotron">
+  <h2>Game List</h2>
+</div>
 
 @if (@Model.Any())
 {
+  <h4>Games in Stock</h4>
+  <hr>
   <ul>
     @foreach (Game game in Model)
     {
-      <li>
-        @Html.ActionLink($"{game.Title}", "Details", new { id = game.GameId })
-      </li>
+      @if (!game.Rented)
+      {
+        <li>
+          @Html.ActionLink($"{game.Title}", "Details", new { id = game.GameId })
+        </li>
+      }
+    }
+  </ul>
+    <h4>Checked out Games</h4>
+  <hr>
+  <ul>
+    @foreach (Game game in Model)
+    {
+      @if (game.Rented)
+      {
+        <li>
+          @Html.ActionLink($"{game.Title}", "Details", new { id = game.GameId })
+        </li>
+      }
     }
   </ul>
 }

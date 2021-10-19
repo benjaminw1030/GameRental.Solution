@@ -9,7 +9,6 @@
 </div>
 
 <p>@Html.DisplayNameFor(model => model.Title): @Html.DisplayFor(model => model.Title)</p>
-<p>@Html.DisplayNameFor(model => model.Copies): @Html.DisplayFor(model => model.Copies)</p>
 
 @if (@Model.JoinEntities.Count == 0)
 {
@@ -30,6 +29,37 @@ else
     }
   </ul>
 }
+
+@if(Model.Rented)
+{
+  <p>This game is currently checked out.</p>
+    @using (Html.BeginForm("Edit", "Games"))
+    {
+      @Html.HiddenFor(model => model.GameId)
+      @Html.HiddenFor(model => model.Title)
+      <input data-val="true" data-val-required="The Rented field is required." id="Rented" name="Rented" type="hidden" value="False">
+      <input type="submit" value="Turn it back in!" class="btn btn-dark"/>
+    }
+}
+else
+{
+  if(User.Identity.IsAuthenticated)
+  {
+    <p>This game is available for rent.</p>
+    @using (Html.BeginForm("Edit", "Games"))
+    {
+      @Html.HiddenFor(model => model.GameId)
+      @Html.HiddenFor(model => model.Title)
+      <input data-val="true" data-val-required="The Rented field is required." id="Rented" name="Rented" type="hidden" value="True">
+      <input type="submit" value="Rent it!" class="btn btn-dark"/>
+    }
+  }
+  else
+  {
+    <p>This game is available for rent. @Html.ActionLink("Log in", "Login", "Account") to rent it!</p>
+  }
+}
+
 
 <p>@Html.ActionLink("Edit Game", "Edit", new { id = Model.GameId })</p>
 <p>@Html.ActionLink("Delete Game", "Delete", new { id = Model.GameId })</p>

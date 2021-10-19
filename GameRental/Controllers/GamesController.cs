@@ -159,5 +159,13 @@ namespace GameRental.Controllers
       var foundGames = _db.Games.Where(game => game.Title.ToLower().Contains(search2)).ToList();
       return View(foundGames);
     }
+
+    // [HttpPost]
+    // public ActionResult CheckOut(Game game)
+    // {
+    //   _db.Entry(game).State = EntityState.Modified; 
+    //   _db.SaveChanges();
+    //   return RedirectToAction("Details", new { id = game.GameId });
+    // }
   }
 }

@@ -12,8 +12,7 @@ namespace GameRental.Models
 
     public int GameId { get; set; }
     public string Title { get; set; }
-    public int Copies { get; set; }
-    public virtual ApplicationUser User { get; set; }
+    public bool Rented { get; set; }
     public virtual ICollection<DeveloperGame> JoinEntities { get; set; }
   }
 }

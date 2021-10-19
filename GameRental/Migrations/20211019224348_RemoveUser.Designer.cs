@@ -3,14 +3,16 @@ using System;
 using GameRental.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GameRental.Migrations
 {
     [DbContext(typeof(GameRentalContext))]
-    partial class GameRentalContextModelSnapshot : ModelSnapshot
+    [Migration("20211019224348_RemoveUser")]
+    partial class RemoveUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

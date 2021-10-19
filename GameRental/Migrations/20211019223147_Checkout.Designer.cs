@@ -3,14 +3,16 @@ using System;
 using GameRental.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GameRental.Migrations
 {
     [DbContext(typeof(GameRentalContext))]
-    partial class GameRentalContextModelSnapshot : ModelSnapshot
+    [Migration("20211019223147_Checkout")]
+    partial class Checkout
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -128,7 +130,12 @@ namespace GameRental.Migrations
                     b.Property<string>("Title")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+
                     b.HasKey("GameId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Games");
                 });
@@ -278,6 +285,15 @@ namespace GameRental.Migrations
                     b.Navigation("Developer");
 
                     b.Navigation("Game");
+                });
+
+            modelBuilder.Entity("GameRental.Models.Game", b =>
+                {
+                    b.HasOne("GameRental.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
