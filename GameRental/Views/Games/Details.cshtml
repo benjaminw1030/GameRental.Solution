@@ -1,0 +1,36 @@
+@{
+  Layout = "_Layout";
+}
+
+@model GameRental.Models.Game
+
+<div class="jumbotron">
+  <h2>Game Details</h2>
+</div>
+
+<p>@Html.DisplayNameFor(model => model.Title): @Html.DisplayFor(model => model.Title)</p>
+<p>@Html.DisplayNameFor(model => model.Copies): @Html.DisplayFor(model => model.Copies)</p>
+
+@if (@Model.JoinEntities.Count == 0)
+{
+  <p>This game is not assigned for any developers.</p>
+}
+else
+{
+  <p>Developers for this this game:</p>
+  <ul>
+    @foreach (var join in Model.JoinEntities)
+    {
+      <li>@join.Developer.Name</li>
+      @using (Html.BeginForm("DeleteDeveloper", "Games"))
+      {
+        @Html.Hidden("joinId", @join.DeveloperGameId)
+        <input type="submit" value="Delete" />
+      }
+    }
+  </ul>
+}
+
+<p>@Html.ActionLink("Edit Game", "Edit", new { id = Model.GameId })</p>
+<p>@Html.ActionLink("Delete Game", "Delete", new { id = Model.GameId })</p>
+<p>@Html.ActionLink("Add a Developer", "AddDeveloper", new { id = Model.GameId })</p>

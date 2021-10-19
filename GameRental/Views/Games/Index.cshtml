@@ -1,0 +1,26 @@
+@{
+  Layout = "_Layout";
+}
+
+@using GameRental.Models;
+@model List<GameRental.Models.Game>;
+
+<h1>games for @User.Identity.Name</h1>
+
+@if (@Model.Any())
+{
+  <ul>
+    @foreach (Game game in Model)
+    {
+      <li>
+        @Html.ActionLink($"{game.Title}", "Details", new { id = game.GameId })
+      </li>
+    }
+  </ul>
+}
+else
+{
+  <h3>No games have been added yet!</h3>
+}
+
+<p>@Html.ActionLink("Add new game", "Create")</p>

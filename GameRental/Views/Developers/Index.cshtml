@@ -1,0 +1,22 @@
+@{
+  Layout = "_Layout";
+}
+
+@using GameRental.Models;
+@model List<GameRental.Models.Developer>;
+
+<h1>Categories</h1>
+
+@if (@Model.Count == 0)
+{
+  <h3>No developers have been added yet!</h3>
+} 
+
+@foreach (Developer developer in Model)
+{
+  <li>@Html.ActionLink($"{developer.Name}", "Details", new { id = developer.DeveloperId })</li>
+}
+
+<p>@Html.ActionLink("Add new developer", "Create")</p>
+
+<p>@Html.ActionLink("Home", "Index", "Home")</p>

@@ -1,0 +1,21 @@
+@{
+  Layout = "_Layout";
+}
+
+@model GameRental.Models.Developer
+
+<div class="jumbotron">
+  <h2>Add a game</h2>
+</div>
+
+<h4>Add a game to this developer: @Html.DisplayFor(model => model.Name)</h4>
+
+@using (Html.BeginForm())
+{
+  @Html.HiddenFor(model => model.DeveloperId)
+
+  @Html.Label("Select Game")
+  @Html.DropDownList("GameId")
+
+  <input type="submit" value="Save"/>
+}

@@ -1,0 +1,14 @@
+@{
+  Layout = "_Layout";
+}
+
+@model GameRental.Models.Developer
+
+<h4>Add a new developer</h4>
+@using (Html.BeginForm())
+{
+  @Html.LabelFor(model => model.Name)
+  @Html.TextBoxFor(model => model.Name)
+  <input type="submit" value="Add new developer" />
+}
+<p>@Html.ActionLink("Show all developers", "Index")</p>

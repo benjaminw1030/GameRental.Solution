@@ -1,0 +1,22 @@
+@{
+  Layout = "_Layout";
+}
+
+@model GameRental.Models.Game
+
+<div class="jumbotron">
+  <h2>Add a new game</h2>
+</div>
+@using (Html.BeginForm())
+{
+    @Html.LabelFor(model => model.Title)
+    @Html.TextBoxFor(model => model.Title)
+
+    @Html.LabelFor(model => model.Copies)
+    @Html.TextBoxFor(model => model.Copies)
+
+    @Html.Label("Select Developer")
+    @Html.DropDownList("DeveloperId")
+
+    <input type="submit" value="Add new game" class="btn btn-dark"/>
+}
