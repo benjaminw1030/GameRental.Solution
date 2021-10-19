@@ -21,11 +21,11 @@ else
   <ul>
     @foreach (var join in Model.JoinEntities)
     {
-      <li>@join.Developer.Name</li>
+      <li>@Html.ActionLink(@join.Developer.Name, "Details", "Developers", new { id = join.Developer.DeveloperId })</li>
       @using (Html.BeginForm("DeleteDeveloper", "Games"))
       {
         @Html.Hidden("joinId", @join.DeveloperGameId)
-        <input type="submit" value="Delete" />
+        <input type="submit" value="Delete" class="btn btn-dark"/>
       }
     }
   </ul>

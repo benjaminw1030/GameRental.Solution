@@ -21,12 +21,19 @@ namespace GameRental.Controllers
       _userManager = userManager;
       _db = db;
     }
-    public async Task<ActionResult> Index()
+
+    // public async Task<ActionResult> Index()
+    // {
+    //   var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    //   var currentUser = await _userManager.FindByIdAsync(userId);
+    //   var userGames = _db.Games.Where(entry => entry.User.Id == currentUser.Id).ToList();
+    //   return View(userGames);
+    // }
+    [AllowAnonymous]
+    public ActionResult Index()
     {
-      var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-      var currentUser = await _userManager.FindByIdAsync(userId);
-      var userGames = _db.Games.Where(entry => entry.User.Id == currentUser.Id).ToList();
-      return View(userGames);
+      List<Game> model = _db.Games.ToList();
+      return View(model);
     }
 
     public ActionResult Create()
@@ -35,22 +42,31 @@ namespace GameRental.Controllers
       return View();
     }
 
+    // [HttpPost]
+    // public async Task<ActionResult> Create(Game game, int DeveloperId)
+    // {
+    //   var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    //   var currentUser = await _userManager.FindByIdAsync(userId);
+    //   game.User = currentUser;
+    //   _db.Games.Add(game);
+    //   _db.SaveChanges();
+    //   if (DeveloperId != 0)
+    //   {
+    //     _db.DeveloperGame.Add(new DeveloperGame() { DeveloperId = DeveloperId, GameId = game.GameId });
+    //   }
+    //   _db.SaveChanges();
+    //   return RedirectToAction("Index");
+    // }
+
     [HttpPost]
-    public async Task<ActionResult> Create(Game game, int DeveloperId)
+    public ActionResult Create(Game game)
     {
-      var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-      var currentUser = await _userManager.FindByIdAsync(userId);
-      game.User = currentUser;
       _db.Games.Add(game);
-      _db.SaveChanges();
-      if (DeveloperId != 0)
-      {
-        _db.DeveloperGame.Add(new DeveloperGame() { DeveloperId = DeveloperId, GameId = game.GameId });
-      }
       _db.SaveChanges();
       return RedirectToAction("Index");
     }
 
+    [AllowAnonymous]
     public ActionResult Details(int id)
     {
       var thisGame = _db.Games
@@ -94,7 +110,6 @@ namespace GameRental.Controllers
       return RedirectToAction("Index");
     }
 
-    
     public ActionResult AddDeveloper(int id)
     {
       var thisGame = _db.Games.FirstOrDefault(game => game.GameId == id);
@@ -120,6 +135,23 @@ namespace GameRental.Controllers
       _db.DeveloperGame.Remove(joinEntry);
       _db.SaveChanges();
       return RedirectToAction("Index");
+    }
+
+
+    // [AllowAnonymous]
+    // public ActionResult Search()
+    // {
+    //   return View(foundGames);
+    // }
+
+    [AllowAnonymous]
+    [HttpPost]
+    public ActionResult Search(string search)
+    {
+      char[] charsToTrim = { ' ' };
+      string search2 = search.ToLower().Trim(charsToTrim);
+      var foundGames = _db.Games.Where(game => game.Title.ToLower().Contains(search2)).ToList();
+      return View(foundGames);
     }
   }
 }

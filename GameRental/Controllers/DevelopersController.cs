@@ -1,20 +1,29 @@
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using GameRental.Models;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using System.Threading.Tasks;
+using System.Security.Claims;
 
 namespace GameRental.Controllers
 {
+  [Authorize]
   public class DevelopersController : Controller
   {
     private readonly GameRentalContext _db;
+    private readonly UserManager<ApplicationUser> _userManager;
 
-    public DevelopersController(GameRentalContext db)
+    public DevelopersController(UserManager<ApplicationUser> userManager, GameRentalContext db)
     {
+      _userManager = userManager;
       _db = db;
     }
 
+    [AllowAnonymous]
     public ActionResult Index()
     {
       List<Developer> model = _db.Developers.ToList();
@@ -23,6 +32,7 @@ namespace GameRental.Controllers
 
     public ActionResult Create()
     {
+      ViewBag.GameId = new SelectList(_db.Games, "GameId", "Title");
       return View();
     }
 
@@ -34,6 +44,7 @@ namespace GameRental.Controllers
       return RedirectToAction("Index");
     }
 
+    [AllowAnonymous]
     public ActionResult Details(int id)
     {
       var thisDeveloper = _db.Developers
@@ -46,12 +57,17 @@ namespace GameRental.Controllers
     public ActionResult Edit(int id)
     {
       var thisDeveloper = _db.Developers.FirstOrDefault(developer => developer.DeveloperId == id);
+      ViewBag.GameId = new SelectList(_db.Games, "GameId", "Title");
       return View(thisDeveloper);
     }
 
     [HttpPost]
-    public ActionResult Edit(Developer developer)
+    public ActionResult Edit(Developer developer, int GameId)
     {
+      if (GameId != 0)
+      {
+        _db.DeveloperGame.Add(new DeveloperGame() { DeveloperId = developer.DeveloperId, GameId = GameId});
+      }
       _db.Entry(developer).State = EntityState.Modified;
       _db.SaveChanges();
       return RedirectToAction("Index");
@@ -70,6 +86,43 @@ namespace GameRental.Controllers
       _db.Developers.Remove(thisDeveloper);
       _db.SaveChanges();
       return RedirectToAction("Index");
+    }
+
+    public ActionResult AddGame(int id)
+    {
+      var thisDeveloper = _db.Developers.FirstOrDefault(developer => developer.DeveloperId == id);
+      ViewBag.GameId = new SelectList(_db.Games, "GameId", "Title");
+      return View(thisDeveloper);
+    }
+
+    [HttpPost]
+    public ActionResult AddGame(Developer developer, int GameId)
+    {
+      if (GameId != 0)
+      {
+        _db.DeveloperGame.Add(new DeveloperGame() { DeveloperId =developer.DeveloperId, GameId = GameId });
+      }
+      _db.SaveChanges();
+      return RedirectToAction("Index");
+    }
+
+    [HttpPost]
+    public ActionResult DeleteGame(int joinId)
+    {
+      var joinEntry = _db.DeveloperGame.FirstOrDefault(entry => entry.DeveloperGameId == joinId);
+      _db.DeveloperGame.Remove(joinEntry);
+      _db.SaveChanges();
+      return RedirectToAction("Index");
+    }
+
+    [AllowAnonymous]
+    [HttpPost]
+    public ActionResult Search(string search)
+    {
+      char[] charsToTrim = { ' ' };
+      string search2 = search.ToLower().Trim(charsToTrim);
+      var foundDevelopers = _db.Developers.Where(developer => developer.Name.ToLower().Contains(search2)).ToList();
+      return View(foundDevelopers);
     }
   }
 }

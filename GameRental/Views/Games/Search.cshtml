@@ -5,7 +5,9 @@
 @using GameRental.Models;
 @model List<GameRental.Models.Game>;
 
-<h1>Games in stock</h1>
+<div class="jumbotron">
+  <h2>Search Results</h2>
+</div>
 
 @if (@Model.Any())
 {
@@ -20,13 +22,7 @@
 }
 else
 {
-  <h3>No games have been added yet!</h3>
-}
-
-@using (Html.BeginForm("Search", "Games"))
-{
-  @Html.TextBox("search")
-  <input type="submit" value="Search" class="btn btn-dark">
+  <h3>No games found.</h3>
 }
 
 <p>@Html.ActionLink("Add new game", "Create")</p>
