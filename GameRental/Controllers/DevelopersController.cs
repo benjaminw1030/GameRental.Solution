@@ -91,7 +91,14 @@ namespace GameRental.Controllers
     public ActionResult AddGame(int id)
     {
       var thisDeveloper = _db.Developers.FirstOrDefault(developer => developer.DeveloperId == id);
-      ViewBag.GameId = new SelectList(_db.Games, "GameId", "Title");
+      List<Game> gameDevelopers = new List<Game> { };
+      foreach (DeveloperGame join in thisDeveloper.JoinEntities)
+      {
+        gameDevelopers.Add(join.Game);
+      }
+      var gameSelect = _db.Games.Where(game => !gameDevelopers.Contains(game)).ToList();
+      ViewBag.GameId = new SelectList(gameSelect, "GameId", "Title");
+      ViewBag.ValidGames = gameSelect;
       return View(thisDeveloper);
     }
 

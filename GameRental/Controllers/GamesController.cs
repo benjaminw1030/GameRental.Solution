@@ -79,7 +79,6 @@ namespace GameRental.Controllers
     public ActionResult Edit(int id)
     {
       var thisGame = _db.Games.FirstOrDefault(game => game.GameId == id);
-      ViewBag.DeveloperId = new SelectList(_db.Developers, "DeveloperId", "Name");
       return View(thisGame);
     }
 
@@ -88,7 +87,7 @@ namespace GameRental.Controllers
     {
       if (DeveloperId != 0)
       {
-        _db.DeveloperGame.Add(new DeveloperGame() { DeveloperId = DeveloperId, GameId = game.GameId});
+        _db.DeveloperGame.Add(new DeveloperGame() { DeveloperId = DeveloperId, GameId = game.GameId });
       }
       _db.Entry(game).State = EntityState.Modified;
       _db.SaveChanges();
@@ -113,7 +112,14 @@ namespace GameRental.Controllers
     public ActionResult AddDeveloper(int id)
     {
       var thisGame = _db.Games.FirstOrDefault(game => game.GameId == id);
-      ViewBag.DeveloperId = new SelectList(_db.Developers, "DeveloperId", "Name");
+      List<Developer> developerGames = new List<Developer> { };
+      foreach (DeveloperGame join in thisGame.JoinEntities)
+      {
+        developerGames.Add(join.Developer);
+      }
+      var developerSelect = _db.Developers.Where(developer => !developerGames.Contains(developer)).ToList();
+      ViewBag.DeveloperId = new SelectList(developerSelect, "DeveloperId", "Name");
+      ViewBag.ValidDevelopers = developerSelect;
       return View(thisGame);
     }
 
