@@ -9,6 +9,7 @@ namespace GameRental.Models
     public DbSet<Game> Games { get; set; }
     public DbSet<Copy> Copies { get; set; }
     public DbSet<DeveloperGame> DeveloperGame { get; set; }
+    public DbSet<Checkout> Checkouts { get; set; }
 
     public GameRentalContext(DbContextOptions options) : base(options) { }
 

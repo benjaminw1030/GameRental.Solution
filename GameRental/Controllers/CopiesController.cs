@@ -43,9 +43,16 @@ namespace GameRental.Controllers
     }
 
     [HttpPost]
-    public ActionResult Rent(Copy copy)
+    public async Task<ActionResult> Rent(Copy copy)
     {
       _db.Entry(copy).State = EntityState.Modified; 
+      _db.SaveChanges();
+      var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+      var currentUser = await _userManager.FindByIdAsync(userId);
+      if (copy.CopyId !=0)
+      {
+        _db.Checkouts.Add(new Checkout() { CopyId = copy.CopyId, UserId = currentUser.Id });
+      }
       _db.SaveChanges();
       return RedirectToAction("Index", "Games");
     }

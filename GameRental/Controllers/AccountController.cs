@@ -1,7 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using GameRental.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Security.Claims;
 using GameRental.ViewModels;
 
 namespace GameRental.Controllers
@@ -20,7 +26,9 @@ namespace GameRental.Controllers
 
     public ActionResult Index()
     {
-      return View();
+      var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+      List<Checkout> userCheckouts = _db.Checkouts.Where(checkout => checkout.UserId == userId).ToList();
+      return View(userCheckouts);
     }
 
     public IActionResult Register()

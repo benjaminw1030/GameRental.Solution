@@ -5,6 +5,8 @@
   <p>|</p>
   <p>@Html.ActionLink("Developer List", "Index", "Developers")</p>
   <p>|</p>
+  <p>@Html.ActionLink("Account", "Index", "Account")</p>
+  <p>|</p>
   @if (User.Identity.IsAuthenticated)
   {
     @using (Html.BeginForm("Logoff", "Account"))
