@@ -1,0 +1,24 @@
+@{
+  Layout = "_Layout";
+}
+
+@using GameRental.Models
+@model List<GameRental.Models.Checkout>;
+
+<div class="jumbotron">
+  <h2>Overdue Games</h2>
+</div>
+
+@if(Model.Count > 0)
+{
+  <ul>
+  @foreach (var checkout in Model)
+  {
+    <li>@checkout.Copy.Game.Title - rented by @checkout.User on @checkout.Copy.RentalDate</li>
+  }
+  </ul>
+}
+else
+{
+  <p>There are no overdue games.</p>
+}

@@ -42,22 +42,6 @@ namespace GameRental.Controllers
       return View();
     }
 
-    // [HttpPost]
-    // public async Task<ActionResult> Create(Game game, int DeveloperId)
-    // {
-    //   var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-    //   var currentUser = await _userManager.FindByIdAsync(userId);
-    //   game.User = currentUser;
-    //   _db.Games.Add(game);
-    //   _db.SaveChanges();
-    //   if (DeveloperId != 0)
-    //   {
-    //     _db.DeveloperGame.Add(new DeveloperGame() { DeveloperId = DeveloperId, GameId = game.GameId });
-    //   }
-    //   _db.SaveChanges();
-    //   return RedirectToAction("Index");
-    // }
-
     [HttpPost]
     public ActionResult Create(Game game)
     {
@@ -80,6 +64,7 @@ namespace GameRental.Controllers
     public ActionResult Edit(int id)
     {
       var thisGame = _db.Games.FirstOrDefault(game => game.GameId == id);
+      ViewBag.DeveloperId = new SelectList(_db.Developers, "DeveloperId", "Name");
       return View(thisGame);
     }
 

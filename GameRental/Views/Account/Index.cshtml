@@ -26,7 +26,18 @@
     <ul>
     @foreach (Checkout checkout in Model)
     {
-      <li>@Html.ActionLink(@checkout.Copy.Game.Title, "Details", "Games", new { Id = @checkout.Copy.GameId })</li>
+      string warning = "";
+      string date = checkout.Copy.RentalDate.ToString("d");
+      TimeSpan rentalTime = new TimeSpan(7, 0, 0, 0);
+      DateTime dueDate = @checkout.Copy.RentalDate.Add(rentalTime);
+      string dueDateString = dueDate.ToString("d");
+      if(DateTime.Now.Ticks >= dueDate.Ticks)
+      {
+        warning = " OVERDUE";
+      }
+      <li>
+        @Html.ActionLink(@checkout.Copy.Game.Title, "Details", "Games", new { Id = @checkout.Copy.GameId }) - Rented on @date, due on @dueDateString @warning
+      </li>
     }
     </ul>
   }
