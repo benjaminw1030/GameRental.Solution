@@ -1,0 +1,19 @@
+@{
+  Layout = "_Layout";
+}
+
+@model GameRental.Models.Copy
+
+<div class="jumbotron">
+  <h2>Add copies of a game</h2>
+</div>
+@using (Html.BeginForm())
+{
+    @Html.LabelFor(model => model.Game)
+    @Html.DropDownList("GameId")
+
+    @Html.Label("copies")
+    @Html.TextBox("copies","1", new { @type="number", min="1" })
+
+    <input type="submit" value="Add copies" class="btn btn-dark"/>
+}

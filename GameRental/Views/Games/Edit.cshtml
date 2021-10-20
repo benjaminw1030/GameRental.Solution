@@ -8,9 +8,6 @@
 
 @using (Html.BeginForm())
 {
-  @Html.HiddenFor(model => model.GameId)
-  @Html.HiddenFor(model => model.Rented)
-
   @Html.LabelFor(model => model.Title)
   @Html.EditorFor(model => model.Title)
 

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System;
 
 namespace GameRental.Models
 {
@@ -7,12 +6,13 @@ namespace GameRental.Models
   {
     public Game()
     {
-      this.JoinEntities = new HashSet<DeveloperGame>(); 
+      this.JoinEntities = new HashSet<DeveloperGame>();
+      this.Copies = new HashSet<Copy>();
     }
 
     public int GameId { get; set; }
     public string Title { get; set; }
-    public bool Rented { get; set; }
     public virtual ICollection<DeveloperGame> JoinEntities { get; set; }
+    public virtual ICollection<Copy> Copies { get; set; }
   }
 }

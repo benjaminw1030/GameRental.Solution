@@ -3,14 +3,16 @@ using System;
 using GameRental.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GameRental.Migrations
 {
     [DbContext(typeof(GameRentalContext))]
-    partial class GameRentalContextModelSnapshot : ModelSnapshot
+    [Migration("20211020171611_Copies")]
+    partial class Copies
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -97,7 +99,7 @@ namespace GameRental.Migrations
 
                     b.HasIndex("GameId");
 
-                    b.ToTable("Copies");
+                    b.ToTable("Copy");
                 });
 
             modelBuilder.Entity("GameRental.Models.Developer", b =>

@@ -11,32 +11,31 @@
 
 @if (@Model.Any())
 {
-  <h4>Games in Stock</h4>
   <hr>
   <ul>
     @foreach (Game game in Model)
     {
-      @if (!game.Rented)
+      int availableCount = 0;
+      foreach (var copy in game.Copies)
       {
-        <li>
-          @Html.ActionLink($"{game.Title}", "Details", new { id = game.GameId })
-        </li>
+        if (!copy.Rented)
+        {
+          availableCount++;
+        }
       }
+      <li>
+        @Html.ActionLink($"{game.Title}", "Details", new { id = game.GameId })
+        @if (availableCount == 0)
+        {
+          <span> - no available copies for rent.</span>
+        }
+      </li>
     }
   </ul>
-    <h4>Checked out Games</h4>
-  <hr>
-  <ul>
-    @foreach (Game game in Model)
-    {
-      @if (game.Rented)
-      {
-        <li>
-          @Html.ActionLink($"{game.Title}", "Details", new { id = game.GameId })
-        </li>
-      }
-    }
-  </ul>
+  @if (User.Identity.IsAuthenticated)
+  {
+    @Html.ActionLink("Add game copies", "Create", "Copies")
+  }
 }
 else
 {

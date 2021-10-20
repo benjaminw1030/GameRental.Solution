@@ -1,7 +1,18 @@
 @{
   Layout = "_Layout";
+  int availableCount = 0;
+  List<Copy> availableCopies = new List<Copy> { };
+  foreach (var copy in Model.Copies)
+  {
+    if (!copy.Rented)
+    {
+      availableCount++;
+      availableCopies.Add(copy);
+    }
+  }
 }
 
+@using GameRental.Models
 @model GameRental.Models.Game
 
 <div class="jumbotron">
@@ -30,26 +41,19 @@ else
   </ul>
 }
 
-@if(Model.Rented)
+@if(availableCount == 0)
 {
-  <p>This game is currently checked out.</p>
-    @using (Html.BeginForm("Edit", "Games"))
-    {
-      @Html.HiddenFor(model => model.GameId)
-      @Html.HiddenFor(model => model.Title)
-      <input data-val="true" data-val-required="The Rented field is required." id="Rented" name="Rented" type="hidden" value="False">
-      <input type="submit" value="Turn it back in!" class="btn btn-dark"/>
-    }
+  <p>This game has no copies available.</p>
 }
 else
 {
   if(User.Identity.IsAuthenticated)
   {
-    <p>This game is available for rent.</p>
-    @using (Html.BeginForm("Edit", "Games"))
+    <p>This game has @availableCount out of @Model.Copies.Count copies for rent.</p>
+    @using (Html.BeginForm("Rent", "Copies"))
     {
-      @Html.HiddenFor(model => model.GameId)
-      @Html.HiddenFor(model => model.Title)
+      <input data-val="true" data-val-required="The CopyId field is required." id="CopyId" name="CopyId" type="hidden" value="@ViewBag.CopyToRent.CopyId">
+      <input data-val="true" data-val-required="The GameId field is required." id="GameId" name="GameId" type="hidden" value="@ViewBag.CopyToRent.GameId">
       <input data-val="true" data-val-required="The Rented field is required." id="Rented" name="Rented" type="hidden" value="True">
       <input type="submit" value="Rent it!" class="btn btn-dark"/>
     }

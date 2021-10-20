@@ -73,6 +73,7 @@ namespace GameRental.Controllers
         .Include(game => game.JoinEntities)
         .ThenInclude(join => join.Developer)
         .FirstOrDefault(game => game.GameId == id);
+      ViewBag.CopyToRent = _db.Copies.FirstOrDefault(copy => copy.Rented == false && copy.GameId == thisGame.GameId);
       return View(thisGame);
     }
 
@@ -143,13 +144,6 @@ namespace GameRental.Controllers
       return RedirectToAction("Index");
     }
 
-
-    // [AllowAnonymous]
-    // public ActionResult Search()
-    // {
-    //   return View(foundGames);
-    // }
-
     [AllowAnonymous]
     [HttpPost]
     public ActionResult Search(string search)
@@ -159,13 +153,5 @@ namespace GameRental.Controllers
       var foundGames = _db.Games.Where(game => game.Title.ToLower().Contains(search2)).ToList();
       return View(foundGames);
     }
-
-    // [HttpPost]
-    // public ActionResult CheckOut(Game game)
-    // {
-    //   _db.Entry(game).State = EntityState.Modified; 
-    //   _db.SaveChanges();
-    //   return RedirectToAction("Details", new { id = game.GameId });
-    // }
   }
 }
